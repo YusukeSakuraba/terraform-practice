@@ -1,3 +1,3 @@
-公式チュートリアルの AWS 分学習用
+公式チュートリアル AWS 分用
 
 https://developer.hashicorp.com/terraform/tutorials/aws-get-started
