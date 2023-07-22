@@ -10,11 +10,13 @@ terraform {
 }
 
 provider "aws" {
+  # チュートリアルはus-west-2だったが東京にした
   region = "ap-northeast-1"
 }
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-830c94e3"
+  # チュートリアルのamiはnot foundだったので無料枠の物を調べて指定
+  ami           = "ami-0947c48ae0aaf6781"
   instance_type = "t2.micro"
 
   tags = {
