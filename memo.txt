@@ -1,3 +1,7 @@
 ここにメモ書きたい
 
 terraform fmt でフォーマットできる
+
+terraform apply でtfファイルの内容で作成できる
+
+terraform show　現在の状態を表示できる
