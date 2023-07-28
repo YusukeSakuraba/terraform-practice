@@ -16,7 +16,7 @@ provider "aws" {
 
 resource "aws_instance" "app_server" {
   # チュートリアルのamiはnot foundだったので無料枠の物を調べて指定
-  ami           = "ami-0947c48ae0aaf6781"
+  ami = "ami-0947c48ae0aaf6781"
   # アップデート用
   # ami           = "ami-09bad682e5ae72267"
   instance_type = "t2.micro"
