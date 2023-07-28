@@ -5,3 +5,5 @@ terraform fmt でフォーマットできる
 terraform apply でtfファイルの内容で作成できる
 
 terraform show　現在の状態を表示できる
+
+access_key secret_keyはaws configure listで確認できる
