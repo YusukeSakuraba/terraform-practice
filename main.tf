@@ -97,6 +97,10 @@ resource "aws_subnet" "public" {
   # そのサブネットで起動したインスタンスにパブリックIPアドレスを自動的に割り当てる
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1a"
+
+  tags = {
+    Name = "tf-public-subnet"
+  }
 }
 
 # igw
