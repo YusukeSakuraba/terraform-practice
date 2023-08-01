@@ -112,3 +112,12 @@ resource "aws_internet_gateway" "example" {
     Name = "tf-igw"
   }
 }
+
+# igwだけではネットに接続できない。ネットワークにデータを流すためルーティング情報を管理するルートテーブルを用意
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.example.id
+
+  tags = {
+    Name = "tf-route-table"
+  }
+}
