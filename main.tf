@@ -98,3 +98,13 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
   availability_zone       = "ap-northeast-1a"
 }
+
+# igw
+# VPCとインターネット間で通信できるようにする
+resource "aws_internet_gateway" "example" {
+  vpc_id = aws_vpc.example.id
+
+  tags = {
+    Name = "tf-igw"
+  }
+}
