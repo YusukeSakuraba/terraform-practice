@@ -74,3 +74,17 @@ data "aws_iam_policy_document" "alb_log" {
     }
   }
 }
+
+resource "aws_vpc" "example" {
+  cidr_block = "10.0.0.0/16"
+
+  # DNSサーバーによる名前解決を有効にする
+  enable_dns_support = true
+
+  # VPC内のリソースにパブリックDNSホスト名を自動で割り当てる
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "tf-vpc"
+  }
+}
