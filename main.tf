@@ -88,3 +88,13 @@ resource "aws_vpc" "example" {
     Name = "tf-vpc"
   }
 }
+
+# パブリックサブネット
+resource "aws_subnet" "public" {
+  vpc_id = aws_vpc.example.id
+  # CIDRブロックはとくにこだわりがなければVPCでは/16、サブネットでは/24にするとわかりやすい
+  cidr_block = "10.0.0.0/24"
+  # そのサブネットで起動したインスタンスにパブリックIPアドレスを自動的に割り当てる
+  map_public_ip_on_launch = true
+  availability_zone       = "ap-northeast-1a"
+}
