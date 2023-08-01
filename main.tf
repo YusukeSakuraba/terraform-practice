@@ -134,3 +134,21 @@ resource "aws_route_table_association" "public" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
 }
+
+# プライベートネットワーク
+# DBサーバーのようにネットからアクセスしないものを置く
+
+# システムをセキュアにするため、パブリックネットワークには最小限のリソースのみ配置し、それ以外はプライベートネットワークにおくのが定石
+
+# プライベートサブネット
+resource "aws_subnet" "private" {
+  vpc_id            = aws_vpc.example.id
+  cidr_block        = "10.0.64.0/24"
+  availability_zone = "ap-northeast-1a"
+  # パブリックIPアドレスは不要
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "tf-private-subnet"
+  }
+}
