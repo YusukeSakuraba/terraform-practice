@@ -85,7 +85,7 @@ resource "aws_vpc" "example" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "tf-vpc"
+    Name = "tf_vpc"
   }
 }
 
@@ -110,7 +110,7 @@ resource "aws_subnet" "public-1" {
   availability_zone       = "ap-northeast-1c"
 
   tags = {
-    Name = "tf-public-subnet-1"
+    Name = "tf_public_subnet_1"
   }
 }
 
@@ -120,7 +120,7 @@ resource "aws_internet_gateway" "example" {
   vpc_id = aws_vpc.example.id
 
   tags = {
-    Name = "tf-igw"
+    Name = "tf_igw"
   }
 }
 
@@ -129,7 +129,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.example.id
 
   tags = {
-    Name = "tf-route-table"
+    Name = "tf_route_table"
   }
 }
 
@@ -165,7 +165,7 @@ resource "aws_subnet" "private_0" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "tf-private-subnet-0"
+    Name = "tf_private_subnet_0"
   }
 }
 
@@ -176,7 +176,7 @@ resource "aws_subnet" "private_1" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "tf-private-subnet-1"
+    Name = "tf_private_subnet_1"
   }
 }
 
@@ -197,7 +197,7 @@ resource "aws_eip" "nat_gateway_0" {
   depends_on = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-eip-0"
+    Name = "tf_eip_0"
   }
 }
 
@@ -206,7 +206,7 @@ resource "aws_eip" "nat_gateway_1" {
   depends_on = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-eip-1"
+    Name = "tf_eip_1"
   }
 }
 
@@ -217,7 +217,7 @@ resource "aws_nat_gateway" "nat_gateway_0" {
   depends_on    = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-nat-gateway-0"
+    Name = "tf_nat_gateway_0"
   }
 }
 
@@ -227,7 +227,7 @@ resource "aws_nat_gateway" "nat_gateway_1" {
   depends_on    = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-nat-gateway-1"
+    Name = "tf_nat_gateway_1"
   }
 }
 
