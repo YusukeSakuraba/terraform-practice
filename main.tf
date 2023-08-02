@@ -157,15 +157,26 @@ resource "aws_route_table_association" "public_1" {
 # システムをセキュアにするため、パブリックネットワークには最小限のリソースのみ配置し、それ以外はプライベートネットワークにおくのが定石
 
 # プライベートサブネット
-resource "aws_subnet" "private" {
+resource "aws_subnet" "private_0" {
   vpc_id            = aws_vpc.example.id
-  cidr_block        = "10.0.64.0/24"
+  cidr_block        = "10.0.65.0/24"
   availability_zone = "ap-northeast-1a"
   # パブリックIPアドレスは不要
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "tf-private-subnet"
+    Name = "tf-private-subnet-0"
+  }
+}
+
+resource "aws_subnet" "private_1" {
+  vpc_id                  = aws_vpc.example.id
+  cidr_block              = "10.0.66.0/24"
+  availability_zone       = "ap-northeast-1c"
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "tf-private-subnet-1"
   }
 }
 
