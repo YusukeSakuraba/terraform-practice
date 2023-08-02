@@ -254,4 +254,8 @@ resource "aws_nat_gateway" "nat_gateway_1" {
   }
 }
 
+resource "aws_security_group" "example" {
+  name   = "tf_sg"
+  vpc_id = aws_vpc.example.id
+}
 
