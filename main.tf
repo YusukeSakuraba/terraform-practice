@@ -99,7 +99,7 @@ resource "aws_subnet" "public_0" {
   availability_zone       = "ap-northeast-1a"
 
   tags = {
-    Name = "tf-public-subnet-0"
+    Name = "tf_public_subnet_0"
   }
 }
 
