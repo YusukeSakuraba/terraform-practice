@@ -192,23 +192,42 @@ resource "aws_route_table_association" "private" {
 
 # NATサーバーを導入するとプライベートネットワークからインターネットへアクセス可能になる
 # NATゲートウェイにはEIPが必要
-resource "aws_eip" "nat_gateway" {
+resource "aws_eip" "nat_gateway_0" {
   vpc        = true
   depends_on = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-eip"
+    Name = "tf-eip-0"
+  }
+}
+
+resource "aws_eip" "nat_gateway_1" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.example]
+
+  tags = {
+    Name = "tf-eip-1"
   }
 }
 
 # NATゲートウェイ
-resource "aws_nat_gateway" "example" {
-  allocation_id = aws_eip.nat_gateway.id
-  subnet_id     = aws_subnet.public.id
+resource "aws_nat_gateway" "nat_gateway_0" {
+  allocation_id = aws_eip.nat_gateway_0.id
+  subnet_id     = aws_subnet.public_0.id
   depends_on    = [aws_internet_gateway.example]
 
   tags = {
-    Name = "tf-nat-gateway"
+    Name = "tf-nat-gateway-0"
+  }
+}
+
+resource "aws_nat_gateway" "nat_gateway_1" {
+  allocation_id = aws_eip.nat_gateway_1.id
+  subnet_id     = aws_subnet.public_1.id
+  depends_on    = [aws_internet_gateway.example]
+
+  tags = {
+    Name = "tf-nat-gateway-1"
   }
 }
 
