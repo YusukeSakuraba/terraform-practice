@@ -48,6 +48,8 @@ resource "aws_s3_bucket" "public" {
 resource "aws_s3_bucket" "alb_log" {
   bucket = "alb-log-tf-practice-yus"
 
+  # 強制削除（一時的に有効化）
+  force_destroy = true
   lifecycle_rule {
     enabled = true
 
@@ -263,12 +265,14 @@ module "example_sg" {
 }
 
 resource "aws_lb" "example" {
-  name                       = "example"
-  load_balancer_type         = "application"
-  internal                   = false
-  idle_timeout               = 60
+  name               = "example"
+  load_balancer_type = "application"
+  internal           = false
+  idle_timeout       = 60
   # 基本はtrueだが、削除したい時だけfalseにしてapplyしてからdestroyする
-  enable_deletion_protection = true
+  # enable_deletion_protection = true
+  # 基本はtrueだが一時的にfalseにしてる
+  enable_deletion_protection = false
 
   subnets = [
     aws_subnet.public_0.id,
