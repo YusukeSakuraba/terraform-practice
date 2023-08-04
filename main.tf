@@ -268,7 +268,7 @@ resource "aws_lb" "example" {
   internal                   = false
   idle_timeout               = 60
   # 基本はtrueだが、削除したい時だけfalseにしてapplyしてからdestroyする
-  enable_deletion_protection = false
+  enable_deletion_protection = true
 
   subnets = [
     aws_subnet.public_0.id,
