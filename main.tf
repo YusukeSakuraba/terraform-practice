@@ -267,7 +267,8 @@ resource "aws_lb" "example" {
   load_balancer_type         = "application"
   internal                   = false
   idle_timeout               = 60
-  enable_deletion_protection = true
+  # 基本はtrueだが、削除したい時だけfalseにしてapplyしてからdestroyする
+  enable_deletion_protection = false
 
   subnets = [
     aws_subnet.public_0.id,
@@ -321,10 +322,11 @@ resource "aws_lb_listener" "http" {
 
   default_action {
     type = "fixed-response"
-  }
-  fixed_response {
-    content_type = "text/plain"
-    message_body = "これは「HTTP」です"
-    status_code  = "200"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "これは「HTTP」です"
+      status_code  = "200"
+    }
   }
 }
