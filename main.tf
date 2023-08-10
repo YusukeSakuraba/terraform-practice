@@ -352,6 +352,8 @@ resource "aws_ecs_task_definition" "example" {
   container_definitions    = file("./container_definitions.json")
 }
 
+# ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
+# 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
 resource "aws_ecs_service" "example" {
   name                              = "example"
   cluster                           = aws_ecs_cluster.example.arn
