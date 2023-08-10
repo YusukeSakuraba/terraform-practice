@@ -8,8 +8,8 @@
         "essential": true,
         "portMappings": [
             {
-                "protocol":"tcp",
-                "containerPort":80
+                "protocol": "tcp",
+                "containerPort": 80
             }
         ]
     }
