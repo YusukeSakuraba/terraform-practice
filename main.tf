@@ -334,3 +334,20 @@ resource "aws_lb_listener" "http" {
     }
   }
 }
+
+# クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
+resource "aws_ecs_cluster" "example" {
+  name = "example"
+}
+
+# タスク：コンテナの実行単位
+# タスクはタスク定義で作られる
+resource "aws_ecs_task_definition" "example" {
+  # タスク定義名のプレフィックス
+  family                   = "example"
+  cpu                      = "256"
+  memory                   = "512"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = file("./container_definitions.json")
+}
