@@ -343,6 +343,29 @@ data "aws_route53_zone" "example" {
   name = "goal-app.net"
 }
 
+# ホストゾーンを新規に作成
+resource "aws_route53_zone" "test_example" {
+  name = "test.goal-app.net"
+}
+
+# DNSレコードの定義
+# これで、設定したドメインでALBにアクセスできるようになる
+resource "aws_route53_record" "example" {
+  zone_id = data.aws_route53_zone.example.zone_id
+  name    = data.aws_route53_zone.example.name
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.example.dns_name
+    zone_id                = aws_lb.example.zone_id
+    evaluate_target_health = true
+  }
+}
+
+output "domain_name" {
+  value = aws_route53_record.example.name
+}
+
 # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
 # resource "aws_ecs_cluster" "example" {
 #   name = "example"
