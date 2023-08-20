@@ -366,6 +366,58 @@ output "domain_name" {
   value = aws_route53_record.example.name
 }
 
+# SSL証明書の作成
+resource "aws_acm_certificate" "example" {
+  domain_name = aws_route53_record.example.name
+
+  # ドメイン名を追加したい場合、以下に追加する。例えば["test.example.com"]
+  subject_alternative_names = []
+
+  # ドメインの所有権の検証方法を指定
+  # DNS検証かメール検証を選択できる
+  # SSL証明書を自動更新したい場合、DNS検証を選択
+  validation_method = "DNS"
+
+  lifecycle {
+    # 新しい証明書を作ってから古いものと差し替える
+    # これによって証明書の再作成時の影響を小さくできる
+    create_before_destroy = true
+  }
+}
+
+# SSL証明書の検証
+# DNS検証用のDNSレコードを追加
+# resource "aws_route53_record" "example_certificate" {
+#   name    = aws_acm_certificate.example.domain_validation_options[0].resource_record_name
+#   type    = aws_acm_certificate.example.domain_validation_options[0].resource_record_type
+#   records = [aws_acm_certificate.example.domain_validation_options[0].resource_record_value]
+#   zone_id = data.aws_route53_zone.example.id
+#   ttl     = 60
+# }
+
+# resource "aws_acm_certificate_validation" "example" {
+#   certificate_arn         = aws_acm_certificate.example.arn
+#   validation_record_fqdns = [aws_route53_record.example_certificate.fqdn]
+# }
+
+# resource "aws_lb_listener" "https" {
+#   load_balancer_arn = aws_lb.example.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   cerfiticate_arn   = aws_acm_certificate.example.arn
+#   ssl_policy        = "ELBSecurityPolicy-2016^08"
+
+#   default_action {
+#     type = "fixed-response"
+
+#     fixed_response {
+#       content_type = "text/plain"
+#       message_body = "これはHTTPSですよ"
+#       status_code  = "200"
+#     }
+#   }
+# }
+
 # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
 # resource "aws_ecs_cluster" "example" {
 #   name = "example"
