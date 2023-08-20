@@ -336,66 +336,66 @@ resource "aws_lb_listener" "http" {
 }
 
 # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
-resource "aws_ecs_cluster" "example" {
-  name = "example"
-}
+# resource "aws_ecs_cluster" "example" {
+#   name = "example"
+# }
 
-# タスク：コンテナの実行単位
-# タスクはタスク定義で作られる
-resource "aws_ecs_task_definition" "example" {
-  # タスク定義名のプレフィックス
-  family                   = "example"
-  cpu                      = "256"
-  memory                   = "512"
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  container_definitions    = file("./container_definitions.json")
-}
+# # タスク：コンテナの実行単位
+# # タスクはタスク定義で作られる
+# resource "aws_ecs_task_definition" "example" {
+#   # タスク定義名のプレフィックス
+#   family                   = "example"
+#   cpu                      = "256"
+#   memory                   = "512"
+#   network_mode             = "awsvpc"
+#   requires_compatibilities = ["FARGATE"]
+#   container_definitions    = file("./container_definitions.json")
+# }
 
-# ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
-# 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
-resource "aws_ecs_service" "example" {
-  name                              = "example"
-  cluster                           = aws_ecs_cluster.example.arn
-  task_definition                   = aws_ecs_task_definition.example.arn
+# # ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
+# # 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
+# resource "aws_ecs_service" "example" {
+#   name                              = "example"
+#   cluster                           = aws_ecs_cluster.example.arn
+#   task_definition                   = aws_ecs_task_definition.example.arn
   
-  # ECSサービスが維持するタスク数
-  # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
-  desired_count                     = 2
+#   # ECSサービスが維持するタスク数
+#   # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
+#   desired_count                     = 2
   
-  launch_type                       = "FARGATE"
-  platform_version                  = "1.3.0"
+#   launch_type                       = "FARGATE"
+#   platform_version                  = "1.3.0"
   
-  # タスク起動時のヘルスチェック猶予期間を設定
-  # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
-  health_check_grace_period_seconds = 60
+#   # タスク起動時のヘルスチェック猶予期間を設定
+#   # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
+#   health_check_grace_period_seconds = 60
 
-  network_configuration {
-    assign_public_ip = false
-    security_groups  = [module.nginx_sg.security_group_id]
+#   network_configuration {
+#     assign_public_ip = false
+#     security_groups  = [module.nginx_sg.security_group_id]
 
-    subnets = [
-      aws_subnet.private_0.id,
-      aws_subnet.private_1.id,
-    ]
-  }
+#     subnets = [
+#       aws_subnet.private_0.id,
+#       aws_subnet.private_1.id,
+#     ]
+#   }
 
-  load_balancer {
-    # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
-    target_group_arn = aws_lb_target_group.example.arn
-    container_name   = "example"
-    container_port   = 80
-  }
+#   load_balancer {
+#     # TODO:これはroute53でドメインとるのとその後の八章やる必要ありそうなのでそのあとやる
+#     target_group_arn = aws_lb_target_group.example.arn
+#     container_name   = "example"
+#     container_port   = 80
+#   }
 
-  lifecycle {
-    ignore_changes = [task_definition]
-  }
-}
+#   lifecycle {
+#     ignore_changes = [task_definition]
+#   }
+# }
 
-module "nginx_sg" {
-  source      = "./security_group"
-  name        = "nginx-sg"
-  vpc_id      = aws_vpc.example.id
-  port        = 80
-  cidr_blocks = [aws_vpc.example.cidr_block]
-}
+# module "nginx_sg" {
+#   source      = "./security_group"
+#   name        = "nginx-sg"
+#   vpc_id      = aws_vpc.example.id
+#   port        = 80
+#   cidr_blocks = [aws_vpc.example.cidr_block]
+# }
