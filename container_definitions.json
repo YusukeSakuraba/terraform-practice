@@ -1,9 +1,6 @@
-// コンテナ定義
 [
     {   
-        // コンテナ名
         "name": "example",
-        // 使用するコンテナイメージ
         "image": "nginx:latest",
         "essential": true,
         "portMappings": [
