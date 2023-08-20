@@ -335,6 +335,14 @@ resource "aws_lb_listener" "http" {
   }
 }
 
+# ホストゾーン
+# DNSレコードを束ねるリソース
+# Route53でドメイン登録した場合は自動的に作成される
+# そのホストゾーンは以下で参照する
+data "aws_route53_zone" "example" {
+  name = "goal-app.net"
+}
+
 # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
 # resource "aws_ecs_cluster" "example" {
 #   name = "example"
@@ -358,14 +366,14 @@ resource "aws_lb_listener" "http" {
 #   name                              = "example"
 #   cluster                           = aws_ecs_cluster.example.arn
 #   task_definition                   = aws_ecs_task_definition.example.arn
-  
+
 #   # ECSサービスが維持するタスク数
 #   # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
 #   desired_count                     = 2
-  
+
 #   launch_type                       = "FARGATE"
 #   platform_version                  = "1.3.0"
-  
+
 #   # タスク起動時のヘルスチェック猶予期間を設定
 #   # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
 #   health_check_grace_period_seconds = 60
