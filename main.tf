@@ -454,11 +454,15 @@ resource "aws_lb_target_group" "example" {
 
   health_check {
     path                = "/"
+    # 正常判定を行うまでのヘルスチェック実行回数
     healthy_threshold   = 5
+    # 異常判定を行うまでのヘルスチェック実行回数
     unhealthy_threshold = 2
     timeout             = 5
     interval            = 30
+    # 正常判定を行うために使用するHTTPステータスコード
     matcher             = 200
+    # ヘルスチェックで使用するポート
     port                = "traffic-port"
     protocol            = "HTTP"
   }
