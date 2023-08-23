@@ -403,10 +403,10 @@ resource "aws_route53_record" "example_certificate" {
   ttl     = 60
 }
 
-# resource "aws_acm_certificate_validation" "example" {
-#   certificate_arn         = aws_acm_certificate.example.arn
-#   validation_record_fqdns = [aws_route53_record.example_certificate.fqdn]
-# }
+resource "aws_acm_certificate_validation" "example" {
+  certificate_arn         = aws_acm_certificate.example.arn
+   validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
+}
 
 # resource "aws_lb_listener" "https" {
 #   load_balancer_arn = aws_lb.example.arn
@@ -426,7 +426,7 @@ resource "aws_route53_record" "example_certificate" {
 #   }
 # }
 
-# クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
+# # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
 # resource "aws_ecs_cluster" "example" {
 #   name = "example"
 # }
