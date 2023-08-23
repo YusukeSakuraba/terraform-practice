@@ -453,21 +453,40 @@ resource "aws_lb_target_group" "example" {
   deregistration_delay = 300
 
   health_check {
-    path                = "/"
+    path = "/"
     # 正常判定を行うまでのヘルスチェック実行回数
-    healthy_threshold   = 5
+    healthy_threshold = 5
     # 異常判定を行うまでのヘルスチェック実行回数
     unhealthy_threshold = 2
     timeout             = 5
     interval            = 30
     # 正常判定を行うために使用するHTTPステータスコード
-    matcher             = 200
+    matcher = 200
     # ヘルスチェックで使用するポート
-    port                = "traffic-port"
-    protocol            = "HTTP"
+    port     = "traffic-port"
+    protocol = "HTTP"
   }
 
   depends_on = [aws_lb.example]
+}
+
+# リスナールール
+# ターゲットグループにリクエストをフォワードするルール
+resource "aws_lb_listener_rule" "example" {
+  listener_arn = aws_lb_listener.https.arn
+  # 優先順位を指定。数字が小さいほど優先度が高い
+  priority = 100
+
+  action {
+    type = "forward"
+    # フォワード先のtg
+    target_group_arn = aws_lb_target_group.example.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
 }
 
 # # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
