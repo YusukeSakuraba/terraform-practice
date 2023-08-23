@@ -405,7 +405,7 @@ resource "aws_route53_record" "example_certificate" {
 
 resource "aws_acm_certificate_validation" "example" {
   certificate_arn         = aws_acm_certificate.example.arn
-   validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
+  validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
 }
 
 resource "aws_lb_listener" "https" {
@@ -422,6 +422,22 @@ resource "aws_lb_listener" "https" {
       content_type = "text/plain"
       message_body = "これはHTTPSですよ"
       status_code  = "200"
+    }
+  }
+}
+
+resource "aws_lb_listener" "redirect_http_to_https" {
+  load_balancer_arn = aws_lb.example.arn
+  port              = "8080"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 }
