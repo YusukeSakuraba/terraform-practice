@@ -408,23 +408,23 @@ resource "aws_acm_certificate_validation" "example" {
    validation_record_fqdns = [for record in aws_route53_record.example_certificate : record.fqdn]
 }
 
-# resource "aws_lb_listener" "https" {
-#   load_balancer_arn = aws_lb.example.arn
-#   port              = "443"
-#   protocol          = "HTTPS"
-#   cerfiticate_arn   = aws_acm_certificate.example.arn
-#   ssl_policy        = "ELBSecurityPolicy-2016^08"
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.example.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  certificate_arn   = aws_acm_certificate.example.arn
+  ssl_policy        = "ELBSecurityPolicy-2016^08"
 
-#   default_action {
-#     type = "fixed-response"
+  default_action {
+    type = "fixed-response"
 
-#     fixed_response {
-#       content_type = "text/plain"
-#       message_body = "これはHTTPSですよ"
-#       status_code  = "200"
-#     }
-#   }
-# }
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "これはHTTPSですよ"
+      status_code  = "200"
+    }
+  }
+}
 
 # # クラスタ: Dockerコンテナを実行するサーバーを束ねるリソース
 # resource "aws_ecs_cluster" "example" {
