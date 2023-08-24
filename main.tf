@@ -509,16 +509,16 @@ resource "aws_ecs_task_definition" "example" {
 # ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
 # 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
 resource "aws_ecs_service" "example" {
-  name                              = "example"
-  cluster                           = aws_ecs_cluster.example.arn
-  task_definition                   = aws_ecs_task_definition.example.arn
+  name            = "example"
+  cluster         = aws_ecs_cluster.example.arn
+  task_definition = aws_ecs_task_definition.example.arn
 
   # ECSサービスが維持するタスク数
   # ここで1を指定すると、コンテナが以上終了するとECSサービスがタスクを再起動するまでアクセスできなくなる。なので2以上を指定
-  desired_count                     = 2
+  desired_count = 2
 
-  launch_type                       = "FARGATE"
-  platform_version                  = "1.3.0"
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   # タスク起動時のヘルスチェック猶予期間を設定
   # タスク起動に時間がかかる場合、十分な時間を用意しないとヘルスチェックに引っかかり、タスクの起動と終了が無限に続いてしまう。なので0以上を指定する
@@ -552,4 +552,11 @@ module "nginx_sg" {
   vpc_id      = aws_vpc.example.id
   port        = 80
   cidr_blocks = [aws_vpc.example.cidr_block]
+}
+
+# cloudwatch ログ
+# Fargateではホストサーバーにログインできず、コンテナのログを直接確認できない。なのでログで確認できるようにする
+resource "aws_cloudwatch_log_group" "for_ecs" {
+  name              = "/ecs/example"
+  retention_in_days = 180
 }
