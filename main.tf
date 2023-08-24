@@ -494,18 +494,6 @@ resource "aws_ecs_cluster" "example" {
   name = "example"
 }
 
-# タスク：コンテナの実行単位
-# タスクはタスク定義で作られる
-resource "aws_ecs_task_definition" "example" {
-  # タスク定義名のプレフィックス
-  family                   = "example"
-  cpu                      = "256"
-  memory                   = "512"
-  network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE"]
-  container_definitions    = file("./container_definitions.json")
-}
-
 # ECSサービスは起動するタスクの数を定義でき、指定した数のタスクを維持する
 # 何らかの理由でタスクが終了しても自動で新しいタスクを起動する
 resource "aws_ecs_service" "example" {
@@ -563,26 +551,39 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
 
 # ECSタスク実行IAMロールを作成
 # IAMポリシーデータソース
-data "aws_iam_policy" "ecs_task_execution_role_policy" {
-  arn = "arn:aws:iam::aaws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
+# data "aws_iam_policy" "ecs_task_execution_role_policy" {
+#   arn = "arn:aws:iam::aaws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+# }
 
-# ポリシードキュメント
-data "aws_iam_policy_document" "ecs_task_execution" {
-  # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
-  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
+# # ポリシードキュメント
+# data "aws_iam_policy_document" "ecs_task_execution" {
+#   # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
+#   source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
 
-  statement {
-    effect    = "Allow"
-    actions   = ["ssm:GetParameters", "kms:Decrypt"]
-    resources = ["*"]
-  }
-}
+#   statement {
+#     effect    = "Allow"
+#     actions   = ["ssm:GetParameters", "kms:Decrypt"]
+#     resources = ["*"]
+#   }
+# }
 
-# ECSタスク実行IAMロールの定義
-module "ecs_task_execution_role" {
-  source     = "./iam_role"
-  name       = "ecs-task-execution"
-  identifier = "ecs-tasks.amazonaws.com"
-  policy     = data.aws_iam_policy_document.ecs_task_execution.json
+# # ECSタスク実行IAMロールの定義
+# module "ecs_task_execution_role" {
+#   source     = "./iam_role"
+#   name       = "ecs-task-execution"
+#   identifier = "ecs-tasks.amazonaws.com"
+#   policy     = data.aws_iam_policy_document.ecs_task_execution.json
+# }
+
+# # タスク：コンテナの実行単位
+# # タスクはタスク定義で作られる
+resource "aws_ecs_task_definition" "example" {
+  # タスク定義名のプレフィックス
+  family                   = "example"
+  cpu                      = "256"
+  memory                   = "512"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = file("./container_definitions.json")
+  # execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
