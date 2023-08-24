@@ -566,3 +566,15 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
 data "aws_iam_policy" "ecs_task_execution_role_policy" {
   arn = "arn:aws:iam::aaws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+
+# ポリシードキュメント
+data "aws_iam_policy_document" "ecs_task_execution" {
+  # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
+  source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ssm:GetParameters", "kms:Decrypt"]
+    resources = ["*"]
+  }
+}
