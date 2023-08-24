@@ -560,3 +560,9 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
   name              = "/ecs/example"
   retention_in_days = 180
 }
+
+# ECSタスク実行IAMロールを作成
+# IAMポリシーデータソース
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aaws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
