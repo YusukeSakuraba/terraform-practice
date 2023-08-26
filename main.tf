@@ -644,3 +644,20 @@ resource "aws_cloudwatch_event_target" "example_batch" {
     }
   }
 }
+
+# カスタマーキー
+resource "aws_kms_key" "example" {
+  # 使用用途
+  description         = "Customer Master Keyテストです!!"
+  enable_key_rotation = true
+  # キーを有効にするかどうか
+  is_enabled = true
+  # 削除待機期間
+  deletion_window_in_days = 30
+}
+
+# カスタマーキーにはUUIDが割り当てられるが、わかりづらい。なのでエイリアスを設定し、用途をわかりやすくする
+resource "aws_kms_alias" "exasmple" {
+  name          = "alias/example"
+  target_key_id = aws_kms_key.example.key_id
+}
