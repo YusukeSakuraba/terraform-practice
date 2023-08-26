@@ -587,3 +587,9 @@ resource "aws_ecs_task_definition" "example" {
   container_definitions    = file("./container_definitions.json")
   execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
+
+# バッチ用cloudwatch logs
+resource "aws_cloudwatch_log_group" "for_ecs_scheduled_tasks" {
+  name              = "/ecs-scheduled-tasks/example"
+  retention_in_days = 180
+}
