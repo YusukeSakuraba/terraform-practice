@@ -604,3 +604,16 @@ resource "aws_ecs_task_definition" "example_batch" {
   container_definitions    = file("./batch_container_definitions.json")
   execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
+
+# cloudwatchイベントからECSを起動するためのIAMロールを作成する
+module "ecs_events_role" {
+  source     = "./iam_role"
+  name       = "ecs-events"
+  identifier = "events.amazonaws.com"
+  policy     = data.aws_iam_policy.ecs_events_role_policy.policy
+}
+
+data "aws_iam_policy" "ecs_events_role_policy" {
+  # このポリシーでは「タスクを実行する」権限と「タスクにIAMロールを渡す」権限を付与する
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
+}
