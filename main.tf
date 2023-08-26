@@ -560,7 +560,6 @@ data "aws_iam_policy_document" "ecs_task_execution" {
   # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
   source_policy_documents = [data.aws_iam_policy.ecs_task_execution_role_policy.policy]
 
-
   statement {
     effect    = "Allow"
     actions   = ["ssm:GetParameters", "kms:Decrypt"]
