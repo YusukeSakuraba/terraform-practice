@@ -568,12 +568,12 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 }
 
 # # ECSタスク実行IAMロールの定義
-# module "ecs_task_execution_role" {
-#   source     = "./iam_role"
-#   name       = "ecs-task-execution"
-#   identifier = "ecs-tasks.amazonaws.com"
-#   policy     = data.aws_iam_policy_document.ecs_task_execution.json
-# }
+module "ecs_task_execution_role" {
+  source     = "./iam_role"
+  name       = "ecs-task-execution"
+  identifier = "ecs-tasks.amazonaws.com"
+  policy     = data.aws_iam_policy_document.ecs_task_execution.json
+}
 
 # タスク：コンテナの実行単位
 # タスクはタスク定義で作られる
@@ -585,5 +585,5 @@ resource "aws_ecs_task_definition" "example" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = file("./container_definitions.json")
-  # execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
+  execution_role_arn       = module.ecs_task_execution_role.iam_role_arn
 }
