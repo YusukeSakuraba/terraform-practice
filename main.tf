@@ -617,3 +617,10 @@ data "aws_iam_policy" "ecs_events_role_policy" {
   # このポリシーでは「タスクを実行する」権限と「タスクにIAMロールを渡す」権限を付与する
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
+
+# ジョブの実行スケジュールを定義する
+resource "aws_cloudwatch_event_rule" "example_batch" {
+  name                = "example-batch"
+  description         = "実践TFで作成"
+  schedule_expression = "cron(*/2 * * * ? *)"
+}
