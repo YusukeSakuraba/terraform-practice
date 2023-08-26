@@ -551,21 +551,22 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
 
 # ECSタスク実行IAMロールを作成
 # IAMポリシーデータソース
-# data "aws_iam_policy" "ecs_task_execution_role_policy" {
-#   arn = "arn:aws:iam::aaws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-# }
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
 
-# # ポリシードキュメント
-# data "aws_iam_policy_document" "ecs_task_execution" {
-#   # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
-#   source_json = data.aws_iam_policy.ecs_task_execution_role_policy.policy
+# ポリシードキュメント
+data "aws_iam_policy_document" "ecs_task_execution" {
+  # 既存のポリシー（AmazonECSTaskExecutionRolePolicy）を継承
+  source_policy_documents = [data.aws_iam_policy.ecs_task_execution_role_policy.policy]
 
-#   statement {
-#     effect    = "Allow"
-#     actions   = ["ssm:GetParameters", "kms:Decrypt"]
-#     resources = ["*"]
-#   }
-# }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ssm:GetParameters", "kms:Decrypt"]
+    resources = ["*"]
+  }
+}
 
 # # ECSタスク実行IAMロールの定義
 # module "ecs_task_execution_role" {
@@ -575,8 +576,8 @@ resource "aws_cloudwatch_log_group" "for_ecs" {
 #   policy     = data.aws_iam_policy_document.ecs_task_execution.json
 # }
 
-# # タスク：コンテナの実行単位
-# # タスクはタスク定義で作られる
+# タスク：コンテナの実行単位
+# タスクはタスク定義で作られる
 resource "aws_ecs_task_definition" "example" {
   # タスク定義名のプレフィックス
   family                   = "example"
