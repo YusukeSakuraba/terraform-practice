@@ -822,7 +822,7 @@ resource "aws_elasticache_subnet_group" "example" {
 resource "aws_elasticache_replication_group" "example" {
   replication_group_id = "example"
 
-  replication_group_description = "Cluster Disabledです"
+  description = "Cluster Disabledです"
 
   engine         = "redis"
   engine_version = "5.0.4"
