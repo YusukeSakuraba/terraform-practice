@@ -819,7 +819,8 @@ resource "aws_elasticache_subnet_group" "example" {
 resource "aws_elasticache_replication_group" "example" {
   replication_group_id = "example"
 
-  description = "Cluster Disabledです"
+  # 日本語入ってたらエラーになった
+  description = "Cluster Disabled"
 
   engine         = "redis"
   engine_version = "5.0.4"
