@@ -859,12 +859,12 @@ module "redis_sg" {
 
 # ECRリポジトリ
 resource "aws_ecr_repository" "example" {
-  name="example"
+  name = "example"
 }
 
 # ECRライフサイクルポリシー
 resource "aws_ecr_lifecycle_policy" "example" {
-  repository=aws_ecr_repository.example.name
+  repository = aws_ecr_repository.example.name
 
   policy = <<EOF
   {
