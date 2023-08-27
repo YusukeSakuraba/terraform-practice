@@ -720,3 +720,10 @@ resource "aws_db_option_group" "example" {
     option_name = "MARIADB_AUDIT_PLUGIN"
   }
 }
+
+# DBを駆動させるサブネット
+resource "aws_db_subnet_group" "example" {
+  name       = "example"
+  # マルチAZの設定をするため、異なるアベイラビリティゾーンを含める
+  subnet_ids = [aws_subnet.private_o.id, aws_subnet.private_1.id]
+}
