@@ -670,3 +670,19 @@ resource "aws_ssm_parameter" "db_username" {
   type        = "String"
   description = "DBのユーザー名です!!"
 }
+
+# ここでvalue指定したものを暗号化でもできるがセキュリティ的によくない。なのでダミー値を設定し後でAWS CLIで更新する
+
+# 以下コマンドでAWS CLIで上書きする
+# aws ssm put-parameter --name '/db/password' --type SecureString \
+# --value 'ModifiedStrongPassword!' --overwrite
+resource "aws_ssm_parameter" "db_password" {
+  name        = "/db/raw_password"
+  value       = "uninitialized"
+  type        = "SecureString"
+  description = "DBのパスワード!!"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
