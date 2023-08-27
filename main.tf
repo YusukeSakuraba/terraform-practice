@@ -736,47 +736,57 @@ resource "aws_db_instance" "example" {
   # TODO:ここも変えるかも
   engine_version = "5.7.25"
 
-  instance_class        = "db.t3.small"
+  instance_class = "db.t3.small"
 
   allocated_storage     = 20
   max_allocated_storage = 100
   # gp2は汎用SSD
-  storage_type               = "gp2"
-  storage_encrypted          = true
-  
-  kms_key_id                 = aws_kms_key.example.arn
-  
-  username                   = "admin"
-  password                   = "VeryStrongPassword!"
-  
-  multi_az                   = true
+  storage_type      = "gp2"
+  storage_encrypted = true
+
+  kms_key_id = aws_kms_key.example.arn
+
+  username = "admin"
+  password = "VeryStrongPassword!"
+
+  multi_az = true
   # falseでVPC外からのアクセスを遮断する
-  publicly_accessible        = false
-  
+  publicly_accessible = false
+
   # バックアップの時間
-  backup_window              = "09:10-09:40"
+  backup_window = "09:10-09:40"
   # バックアップ期間
-  backup_retention_period    = 30
+  backup_retention_period = 30
 
   maintenance_window         = "mon:10:10-mon:10:40"
   auto_minor_version_upgrade = false
 
-  deletion_protection        = true
-  skip_final_snapshot        = false
-  
-  port                       = 3306
-  
+  deletion_protection = true
+  skip_final_snapshot = false
+
+  port = 3306
+
   # 設定変更のタイミング
   # RDSでは一部の設定に再起動が伴い、予期せぬダウンタイムが起こりえる。なのでfalseにして即時反映させない
-  apply_immediately          = false
+  apply_immediately = false
 
-  vpc_security_group_ids     = [module.mysql_sg.security_group_id]
-  
-  parameter_group_name       = aws_db_option_group.example.name
-  option_group_name          = aws_db_option_group.example.name
-  db_subnet_group_name       = aws_db_subnet_group.example.name
+  vpc_security_group_ids = [module.mysql_sg.security_group_id]
+
+  parameter_group_name = aws_db_option_group.example.name
+  option_group_name    = aws_db_option_group.example.name
+  db_subnet_group_name = aws_db_subnet_group.example.name
 
   lifecycle {
     ignore_changes = [password]
   }
+}
+
+# DBインスタンスのsgの定義
+# DBはVPC内からの通信のみ許可する
+module "mysql_sg" {
+  source      = "./security_group"
+  name        = "mysql-sg"
+  vpc_id      = aws_vpc.example.id
+  port        = 3306
+  cidr_blocks = [aws_vpc.example.cidr_block]
 }
