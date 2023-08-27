@@ -693,8 +693,7 @@ resource "aws_ssm_parameter" "db_password" {
 # MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
 resource "aws_db_parameter_group" "example" {
   name = "example"
-  # TODO:後でバージョン変えるかも
-  family = "mysql5.7"
+  family = "mysql8.0"
 
   parameter {
     name  = "character_set_database"
@@ -713,8 +712,7 @@ resource "aws_db_parameter_group" "example" {
 resource "aws_db_option_group" "example" {
   name        = "example"
   engine_name = "mysql"
-  # TODO:ここも変えるかも
-  major_engine_version = "5.7"
+  major_engine_version = "8.0"
 
   option {
     option_name = "MARIADB_AUDIT_PLUGIN"
@@ -733,8 +731,7 @@ resource "aws_db_instance" "example" {
   identifier = "example"
 
   engine = "mysql"
-  # TODO:ここも変えるかも
-  engine_version = "5.7.25"
+  engine_version = "8.0.33"
 
   instance_class = "db.t3.small"
 
