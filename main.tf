@@ -688,3 +688,21 @@ resource "aws_ssm_parameter" "db_password" {
     ignore_changes = [value]
   }
 }
+
+# MySQLを使用
+# MySQLのmy.cnfファイルに定義するようなDBの設定を以下のDBパラメータグループに書く
+resource "aws_db_parameter_group" "example" {
+  name = "example"
+  # TODO:後でバージョン変えるかも
+  family = "mysql5.7"
+
+  parameter {
+    name  = "character_set_database"
+    value = "utf8mb4"
+  }
+
+  parameter {
+    name  = "character_set_server"
+    value = "utf8mb4"
+  }
+}
