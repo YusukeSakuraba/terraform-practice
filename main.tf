@@ -871,7 +871,7 @@ resource "aws_ecr_lifecycle_policy" "example" {
     "rules":[
       {
         "rulePriority":1,
-        "dexcription":"keep last 30 release tagged images",
+        "description":"keep last 30 release tagged images",
         "selection":{
           "tagStatus":"tagged",
           "tagPrefixList":["release"],
