@@ -761,8 +761,12 @@ resource "aws_db_instance" "example" {
   maintenance_window         = "mon:10:10-mon:10:40"
   auto_minor_version_upgrade = false
 
-  deletion_protection = true
-  skip_final_snapshot = false
+  # DB削除可能にする（一時的）
+  deletion_protection = false
+  skip_final_snapshot = true
+  # DBを削除しない時だけ以下をコメント解除する
+  # deletion_protection = true
+  # skip_final_snapshot = false
 
   port = 3306
 
