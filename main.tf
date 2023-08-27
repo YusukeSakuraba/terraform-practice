@@ -661,3 +661,12 @@ resource "aws_kms_alias" "exasmple" {
   name          = "alias/example"
   target_key_id = aws_kms_key.example.key_id
 }
+
+# SSMパラメータストア
+# /db/usernameのキー名で「root」という値を平文で保存
+resource "aws_ssm_parameter" "db_username" {
+  name        = "/db/username"
+  value       = "root"
+  type        = "String"
+  description = "DBのユーザー名です!!"
+}
