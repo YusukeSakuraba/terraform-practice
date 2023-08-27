@@ -783,6 +783,10 @@ resource "aws_db_instance" "example" {
 
 # DBインスタンスのsgの定義
 # DBはVPC内からの通信のみ許可する
+
+# 以下コマンドでマスタマスターパスワードを変更する
+# aws rds modifiy-db-instance --db-instance-identifier 'example' \
+# --master-user-password 'マスターパスワード'
 module "mysql_sg" {
   source      = "./security_group"
   name        = "mysql-sg"
