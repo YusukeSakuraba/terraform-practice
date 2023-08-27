@@ -676,6 +676,8 @@ resource "aws_ssm_parameter" "db_username" {
 # 以下コマンドでAWS CLIで上書きする
 # aws ssm put-parameter --name '/db/password' --type SecureString \
 # --value 'ModifiedStrongPassword!' --overwrite
+
+# batch-container-definitions.jsonでDB_PASSWORDをcw logsに出力してるけどこれ観れないように対策必要では
 resource "aws_ssm_parameter" "db_password" {
   name        = "/db/raw_password"
   value       = "uninitialized"
