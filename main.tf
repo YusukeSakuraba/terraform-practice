@@ -869,16 +869,18 @@ resource "aws_ecr_lifecycle_policy" "example" {
   policy = <<EOF
   {
     "rules":[
-      "rulePriority":1,
-      "dexcription":"keep last 30 release tagged images",
-      "selection":{
-        "tagStatus":"tagged",
-        "tagPrefixList":["release"],
-        "countType":"imageCountMoreThan",
-        "countNumber":30
-      },
-      "action":{
-        "type":"expire"
+      {
+        "rulePriority":1,
+        "dexcription":"keep last 30 release tagged images",
+        "selection":{
+          "tagStatus":"tagged",
+          "tagPrefixList":["release"],
+          "countType":"imageCountMoreThan",
+          "countNumber":30
+        },
+        "action":{
+          "type":"expire"
+        }
       }
     ]
   }
