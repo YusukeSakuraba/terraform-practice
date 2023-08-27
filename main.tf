@@ -827,7 +827,7 @@ resource "aws_elasticache_replication_group" "example" {
   engine         = "redis"
   engine_version = "5.0.4"
 
-  number_cache_clusters = 3
+  num_cache_clusters = 3
   node_type             = "cache.m3.medium"
 
   snapshot_window          = "09:10--10:10"
