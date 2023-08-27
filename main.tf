@@ -830,7 +830,7 @@ resource "aws_elasticache_replication_group" "example" {
   num_cache_clusters = 3
   node_type             = "cache.m3.medium"
 
-  snapshot_window          = "09:10--10:10"
+  snapshot_window          = "09:10-10:10"
   snapshot_retention_limit = 7
 
   maintenance_window = "mon:10:40-mon:11:40"
