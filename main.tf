@@ -798,3 +798,14 @@ module "mysql_sg" {
   port        = 3306
   cidr_blocks = [aws_vpc.example.cidr_block]
 }
+
+# ElastiCacheパラメータグループ
+resource "aws_elasticache_parameter_group" "example" {
+  name   = "example"
+  family = "redis5.0"
+
+  parameter {
+    name  = "cluster-enabled"
+    value = "no"
+  }
+}
