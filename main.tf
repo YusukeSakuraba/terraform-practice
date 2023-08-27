@@ -706,3 +706,17 @@ resource "aws_db_parameter_group" "example" {
     value = "utf8mb4"
   }
 }
+
+# DBオプショングループ（DBエンジンにオプションを追加できる）
+# 以下ではMariaDB監査プラグインを追加している
+# ユーザーのログインや実行したクエリなどのアクティビティを記録できる
+resource "aws_db_option_group" "example" {
+  name        = "example"
+  engine_name = "mysql"
+  # TODO:ここも変えるかも
+  major-engine_version = "5.7"
+
+  option {
+    option_name = "MARIADB_AUDIT_PLUGIN"
+  }
+}
